@@ -243,13 +243,18 @@ object Trees {
       qualifier.tpe.asInstanceOf[PathType].select(name) // TODO: what about holes, poly functions etc?
   }
 
-  class SelectIn(qualifier: Tree, name: SignedName, selectOwner: TypeRef)(span: Span)
+  class SelectIn(qualifier: Tree, name: SignedName, val selectOwner: TypeRef)(span: Span)
       extends Select(qualifier, name)(span) {
 
     override protected def calculateType(using BaseContext): Type =
       selectOwner.selectIn(name, selectOwner) // TODO: refine at the prefix of the qualifier
 
     override def toString: String = s"SelectIn($qualifier, $name, $selectOwner)"
+  }
+
+  object SelectIn {
+    def unapply(s: SelectIn): Option[(Tree, TermName, TypeRef)] =
+      Some((s.qualifier, s.name, s.selectOwner))
   }
 
   /** `qual.this` */

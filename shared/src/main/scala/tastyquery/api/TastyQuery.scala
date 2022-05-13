@@ -4,7 +4,7 @@ import tastyquery.Contexts.BaseContext
 import tastyquery.ast.Symbols.{Symbol, DeclaringSymbol}
 import tastyquery.ast.Trees.{Tree, DefTree}
 
-class TastyTrees(trees: List[Tree]):
+class TastyTrees(val trees: List[Tree]):
 
   private[tastyquery] def debugDefinitions: Unit =
     for tree <- trees do
@@ -17,5 +17,5 @@ class TastyTrees(trees: List[Tree]):
         case _ =>
       }
 
-class TastyQuery private[api] (ctx: BaseContext, trees: TastyTrees):
+class TastyQuery private[api] (ctx: BaseContext, val trees: TastyTrees):
   export trees.debugDefinitions
